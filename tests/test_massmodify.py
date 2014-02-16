@@ -1,7 +1,8 @@
 import unittest
 import tempfile
-from context import massmodify
+import massmodify
 import time
+
 
 class MassmodifyTests(unittest.TestCase):
     """Tests for massmodify Module."""
@@ -15,10 +16,10 @@ class MassmodifyTests(unittest.TestCase):
                 f.write('AAAAAAAA\nAAAAAAA\n')
                 self.files.append(f.name)
 
-
     def test_modify(self):
         """Test the modify function changes the output for every file."""
-        massmodify.modify(self.dir.name, '/*.txt', lambda x: x.replace('A', 'B'))
+        massmodify.modify(self.dir.name, '/*.txt',
+                          lambda x: x.replace('A', 'B'))
         for fname in self.files:
             with open(fname) as f:
                 for line in f:
