@@ -28,3 +28,17 @@ def concat(input_dir, file_reg, output, *, encoding='utf-8'):
             except Exception:
                 print(line)
                 raise
+
+
+def func(input_dir, file_reg, func, args=None, *, inplace=False):
+    with fileinput.input(glob.glob(input_dir + file_reg),
+                         inplace=inplace) as f:
+        for line in f:
+            try:
+                if args:
+                    func(line, *args)
+                else:
+                    func(line)
+            except Exception:
+                print(line)
+                raise
