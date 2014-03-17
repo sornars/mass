@@ -30,9 +30,9 @@ def concat(input_dir, file_reg, output, *, encoding='utf-8'):
                 raise
 
 
-def func(input_dir, file_reg, func, args=None, *, inplace=False):
+def func(input_dir, file_reg, func, args=None, *, encoding='utf-8'):
     with fileinput.input(glob.glob(input_dir + file_reg),
-                         inplace=inplace) as f:
+                         openhook=fileinput.hook_encoded(encoding)) as f:
         for line in f:
             try:
                 if args:
