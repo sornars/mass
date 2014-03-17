@@ -8,8 +8,8 @@ with open('LICENSE') as f:
 
 setup(name='mass',
       version='0.1.0',
-      description='Modify multiple files in a folder.',
-      author='Shivan Sornaraja',
+      description='Action multiple files in a folder.',
+      author='Shivan Sornarajah',
       author_email='ssornarajah@mediaplex.com',
       py_modules=['mass'],
       long_description=readme,
