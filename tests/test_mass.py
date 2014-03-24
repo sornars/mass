@@ -48,10 +48,10 @@ class MassTests(unittest.TestCase):
                     self.assertRegex(line, 'A+\n')
 
     def test_rename(self):
-        mass.rename(self.dir.name, '/*.txt', prefix='AAA', suffix='BBB.txt')
-        for f in glob.glob(self.dir.name + '/*.txt'):
-            self.assertRegex(f, 'AAA[^B]+BBB.txt')
-
+        mass.rename(self.dir.name, '/*.txt', prefix='AAA', suffix='BBB',
+                    ext='.bak')
+        for f in glob.glob(self.dir.name + '/*'):
+            self.assertRegex(f, 'AAA[^B]+BBB.bak')
 
 if __name__ == '__main__':
     unittest.main()

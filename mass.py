@@ -46,10 +46,12 @@ def func(input_dir, file_reg, func, args=None, *, encoding='utf-8'):
                 raise
 
 
-def rename(input_dir, file_reg, prefix='', suffix=''):
+def rename(input_dir, file_reg, prefix='', suffix='', ext=None):
     """Add the prefix and suffix to every file matching file_reg in
     input_dir."""
     for f in glob.glob(input_dir + file_reg):
         path = os.path.split(f)
         fname = os.path.splitext(path[1])
-        os.rename(f, path[0] + '/' + prefix + fname[0] + suffix)
+        if ext is None:
+            ext = fname[1]
+        os.rename(f, path[0] + '/' + prefix + fname[0] + suffix + ext)
