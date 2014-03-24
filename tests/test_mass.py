@@ -1,8 +1,8 @@
 import unittest
 import tempfile
 import mass
-import time
 import glob
+
 
 class MassTests(unittest.TestCase):
     """Tests for mass Module."""
@@ -52,6 +52,26 @@ class MassTests(unittest.TestCase):
                     ext='.bak')
         for f in glob.glob(self.dir.name + '/*'):
             self.assertRegex(f, 'AAA[^B]+BBB.bak')
+
+    def test_rename_all_bug(self):
+        for i in range(5):
+            with open(self.dir.name + '/{:02d}.cfg'.format(i), 'w') as f:
+                f.write('AAAAAAAA\nAAAAAAA\n')
+                self.files.append(f.name)
+        mass.rename(self.dir.name, '/*', prefix='AAA', suffix='BBB')
+        for f in glob.glob(self.dir.name + '/*'):
+            self.assertRegex(f, 'AAA[^B]+BBB.[txt|cfg]')
+
+    def test_rename_all_bug_ext_suffix(self):
+        for i in range(5):
+            with open(self.dir.name + '/{:02d}.cfg'.format(i), 'w') as f:
+                f.write('AAAAAAAA\nAAAAAAA\n')
+                self.files.append(f.name)
+        mass.rename(self.dir.name, '/*', prefix='AAA', suffix='BBB',
+                    ext_suffix='.bak')
+        for f in glob.glob(self.dir.name + '/*'):
+            self.assertRegex(f, 'AAA[^B]+BBB.[txt|cfg]')
+
 
 if __name__ == '__main__':
     unittest.main()
