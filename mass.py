@@ -1,10 +1,11 @@
 import glob
 import fileinput
 import sys
-
+import os
 
 def modify(input_dir, file_reg, func, args=None):
-    """Run func for every line in the files matching file_reg in input_dir."""
+    """Run func and replace output for every line in the files matching
+    file_reg in input_dir."""
     with fileinput.input(glob.glob(input_dir + file_reg), inplace=True) as f:
         for line in f:
             try:
@@ -31,6 +32,7 @@ def concat(input_dir, file_reg, output, *, encoding='utf-8'):
 
 
 def func(input_dir, file_reg, func, args=None, *, encoding='utf-8'):
+    """Run func for every line in the files matching file_reg in input_dir."""
     with fileinput.input(glob.glob(input_dir + file_reg),
                          openhook=fileinput.hook_encoded(encoding)) as f:
         for line in f:
@@ -42,3 +44,12 @@ def func(input_dir, file_reg, func, args=None, *, encoding='utf-8'):
             except Exception:
                 print(line)
                 raise
+
+
+def rename(input_dir, file_reg, prefix='', suffix=''):
+    """Add the prefix and suffix to every file matching file_reg in
+    input_dir."""
+    for f in glob.glob(input_dir + file_reg):
+        path = os.path.split(f)
+        fname = os.path.splitext(path[1])
+        os.rename(f, path[0] + '/' + prefix + fname[0] + suffix)

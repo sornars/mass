@@ -2,7 +2,7 @@ import unittest
 import tempfile
 import mass
 import time
-
+import glob
 
 class MassTests(unittest.TestCase):
     """Tests for mass Module."""
@@ -46,6 +46,12 @@ class MassTests(unittest.TestCase):
             with open(fname) as f:
                 for line in f:
                     self.assertRegex(line, 'A+\n')
+
+    def test_rename(self):
+        mass.rename(self.dir.name, '/*.txt', prefix='AAA', suffix='BBB.txt')
+        for f in glob.glob(self.dir.name + '/*.txt'):
+            self.assertRegex(f, 'AAA[^B]+BBB.txt')
+
 
 if __name__ == '__main__':
     unittest.main()
