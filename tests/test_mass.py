@@ -72,6 +72,14 @@ class MassTests(unittest.TestCase):
         for f in glob.glob(self.dir.name + '/*'):
             self.assertRegex(f, 'AAA[^B]+BBB.[txt|cfg]')
 
+    def test_concat_filter(self):
+        mass.concat(self.dir.name, '/*.txt', self.dir.name + '/output.txt',
+                    fltr='^A{7}$')
+        with open(self.dir.name + '/output.txt') as f:
+            lines = f.readlines()
+            self.assertEqual(len(lines), 5)
+            for line in lines:
+                self.assertRegex(line, 'A+\n')
 
 if __name__ == '__main__':
     unittest.main()

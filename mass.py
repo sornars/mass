@@ -1,7 +1,9 @@
 import glob
 import fileinput
+import re
 import sys
 import os
+
 
 def modify(input_dir, file_reg, func, args=None):
     """Run func and replace output for every line in the files matching
@@ -18,14 +20,18 @@ def modify(input_dir, file_reg, func, args=None):
                 raise
 
 
-def concat(input_dir, file_reg, output, *, encoding='utf-8'):
+def concat(input_dir, file_reg, output, *, encoding='utf-8', fltr=None):
     """Concatenate all files matching file_reg in input_dir into output."""
     with fileinput.input(glob.glob(input_dir + file_reg),
                          openhook=fileinput.hook_encoded(encoding)) as f, \
             open(output, 'w', encoding=encoding) as o:
         for line in f:
             try:
-                o.write(line)
+                if fltr:
+                    if re.search(fltr, line):
+                        o.write(line)
+                else:
+                    o.write(line)
             except Exception:
                 print(line)
                 raise
